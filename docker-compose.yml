@@ -1,0 +1,10 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: devme-web-pg-${DEVME_PORT:-5432}
+    environment:
+      POSTGRES_USER: devme
+      POSTGRES_PASSWORD: devme
+      POSTGRES_DB: devme_web
+    ports:
+      - "${DEVME_PORT:-5432}:5432"

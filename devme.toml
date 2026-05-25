@@ -40,7 +40,7 @@ depends_on = ["deps", "postgres"]
 description = "Push database schema"
 
 [service.postgres]
-cmd = "docker rm -f devme-web-pg 2>/dev/null; docker run --rm --name devme-web-pg -e POSTGRES_USER=devme -e POSTGRES_PASSWORD=devme -e POSTGRES_DB=devme_web -p {port}:5432 postgres:17-alpine"
+cmd = "DEVME_PORT={port} docker compose up --force-recreate --remove-orphans postgres"
 port = { base = 5432, slot_offset = 10 }
 
 [service.web]
