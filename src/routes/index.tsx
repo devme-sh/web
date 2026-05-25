@@ -146,14 +146,14 @@ function TerminalDemo() {
     <span key={1} className="line"><span className="accent">  ◆</span>  <strong>Configure environment</strong>  <span className="dimmed">3 variables</span></span>,
     <span key={2} className="line"><span className="dimmed">  │</span></span>,
     <span key={3} className="line"><span className="dimmed">  │</span>  <span className="green">◇</span> <span className="yellow">DATABASE_URL</span>  <span className="dimmed">postgresql://localhost:5432/dev</span></span>,
-    <span key={4} className="line"><span className="dimmed">  │</span>  <span className="green">◇</span> <span className="yellow">AUTH_SECRET</span>  <span className="cyan">Generated</span></span>,
+    <span key={4} className="line"><span className="dimmed">  │</span>  <span className="green">◇</span> <span className="yellow">AUTH_SECRET</span>  <span className="green">Generated</span></span>,
     <span key={5} className="line"><span className="dimmed">  │</span>  <span className="green">◇</span> <span className="yellow">API_KEY</span>  <span className="dimmed">sk-proj-...abc</span></span>,
     <span key={6} className="line"><span className="dimmed">  │</span></span>,
     <span key={7} className="line">  └  <span className="green">Wrote 3 variables to .env.local</span></span>,
     <span key={8} className="line">&nbsp;</span>,
     <span key={9} className="line"><span className="accent">  ◆</span>  <strong>Check dependencies</strong></span>,
     <span key={10} className="line"><span className="dimmed">  │</span></span>,
-    <span key={11} className="line"><span className="dimmed">  │</span>  <span className="green">◇</span> <span className="blue">Node.js</span> runtime</span>,
+    <span key={11} className="line"><span className="dimmed">  │</span>  <span className="green">◇</span> Node.js runtime</span>,
     <span key={12} className="line"><span className="dimmed">  │</span>  <span className="green">◇</span> Install dependencies</span>,
     <span key={13} className="line"><span className="dimmed">  │</span></span>,
     <span key={14} className="line">  └  <span className="green">All dependencies satisfied</span></span>,
@@ -161,7 +161,7 @@ function TerminalDemo() {
     <span key={16} className="line"><span className="cyan">[+]</span> Running <span className="green">3/3</span></span>,
     <span key={17} className="line">  <span className="green">●</span> <span className="cyan">postgres</span>    <span className="dimmed">ready to accept connections</span></span>,
     <span key={18} className="line">  <span className="green">●</span> <span className="cyan">api</span>         <span className="dimmed">listening on </span><span className="yellow">:8080</span></span>,
-    <span key={19} className="line">  <span className="green">●</span> <span className="mauve">web</span>         <span className="dimmed">VITE+ ready in </span><span className="yellow">340ms</span></span>,
+    <span key={19} className="line">  <span className="green">●</span> <span className="cyan">web</span>         <span className="dimmed">VITE+ ready in </span><span className="yellow">340ms</span></span>,
   ]
 
   return (
@@ -237,21 +237,21 @@ function HowItWorks() {
       <div className="terminal-demo">
         <span className="line"><span className="dimmed"># 1. Add a devme.toml to your repo</span></span>
         <span className="line">&nbsp;</span>
-        <span className="line"><span className="cyan">schema_version</span> = <span className="peach">1</span></span>
+        <span className="line"><span className="cyan">schema_version</span> = <span className="yellow">1</span></span>
         <span className="line">&nbsp;</span>
-        <span className="line"><span className="dimmed">[</span><span className="yellow">env</span><span className="dimmed">.</span><span className="mauve">DATABASE_URL</span><span className="dimmed">]</span></span>
+        <span className="line"><span className="dimmed">[</span><span className="yellow">env</span><span className="dimmed">.</span><span className="yellow">DATABASE_URL</span><span className="dimmed">]</span></span>
         <span className="line"><span className="cyan">default</span> = <span className="green">"postgresql://localhost:5432/dev"</span></span>
         <span className="line"><span className="cyan">help</span>    = <span className="green">"Connection string for the dev database"</span></span>
         <span className="line">&nbsp;</span>
-        <span className="line"><span className="dimmed">[</span><span className="yellow">step</span><span className="dimmed">.</span><span className="mauve">deps</span><span className="dimmed">]</span></span>
+        <span className="line"><span className="dimmed">[</span><span className="yellow">step</span><span className="dimmed">.</span><span className="yellow">deps</span><span className="dimmed">]</span></span>
         <span className="line"><span className="cyan">check</span>     = <span className="green">"test -d node_modules"</span></span>
         <span className="line"><span className="cyan">provision</span> = <span className="green">"bun install"</span></span>
         <span className="line">&nbsp;</span>
-        <span className="line"><span className="dimmed">[</span><span className="yellow">service</span><span className="dimmed">.</span><span className="mauve">db</span><span className="dimmed">]</span></span>
+        <span className="line"><span className="dimmed">[</span><span className="yellow">service</span><span className="dimmed">.</span><span className="yellow">db</span><span className="dimmed">]</span></span>
         <span className="line"><span className="cyan">cmd</span>  = <span className="green">"docker run --rm -p {'{port}'}:5432 postgres:17"</span></span>
-        <span className="line"><span className="cyan">port</span> = <span className="dimmed">{'{ '}</span><span className="cyan">base</span> = <span className="peach">5432</span><span className="dimmed">, </span><span className="cyan">slot_offset</span> = <span className="peach">10</span><span className="dimmed">{' }'}</span></span>
+        <span className="line"><span className="cyan">port</span> = <span className="dimmed">{'{ '}</span><span className="cyan">base</span> = <span className="yellow">5432</span><span className="dimmed">, </span><span className="cyan">slot_offset</span> = <span className="yellow">10</span><span className="dimmed">{' }'}</span></span>
         <span className="line">&nbsp;</span>
-        <span className="line"><span className="dimmed">[</span><span className="yellow">service</span><span className="dimmed">.</span><span className="mauve">web</span><span className="dimmed">]</span></span>
+        <span className="line"><span className="dimmed">[</span><span className="yellow">service</span><span className="dimmed">.</span><span className="yellow">web</span><span className="dimmed">]</span></span>
         <span className="line"><span className="cyan">cmd</span>        = <span className="green">"bun run dev"</span></span>
         <span className="line"><span className="cyan">depends_on</span> = <span className="dimmed">[</span><span className="green">"deps"</span><span className="dimmed">, </span><span className="green">"db"</span><span className="dimmed">]</span></span>
         <span className="line">&nbsp;</span>
