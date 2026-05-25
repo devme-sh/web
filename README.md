@@ -5,7 +5,7 @@
 <h3 align="center"><a href="https://devme.sh">devme.sh</a></h3>
 
 <p align="center">
-  Product website for <a href="https://github.com/devme-sh/devme">devme</a> — the dev-stack supervisor.
+  Product website for <a href="https://github.com/devme-sh/devme">devme</a>, the dev-stack supervisor.
 </p>
 
 ---
