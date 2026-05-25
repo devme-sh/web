@@ -112,6 +112,12 @@ body {
 .feature-card {
   padding: 1lh 2ch;
   border: 1px solid var(--foreground2);
+  transition: border-color 200ms, transform 200ms;
+}
+
+.feature-card:hover {
+  border-color: var(--cyan);
+  transform: translateY(-2px);
 }
 
 .nf-icon {
@@ -367,7 +373,7 @@ body {
 
 @media (max-width: 600px) {
   .page-wrap {
-    padding: 1.5lh 1.5ch;
+    padding: 1.5lh 3ch;
   }
 
   .hero-content {
@@ -384,18 +390,19 @@ body {
 
   .hero-install {
     font-size: 0.8em;
-    gap: 0.5ch;
-    padding: 0.5lh 1ch;
   }
 
   .install-tab {
-    padding: 0.3lh 1.5ch;
     font-size: 0.85em;
   }
 
   .terminal-demo {
     font-size: 0.8em;
-    padding: 1lh 1ch;
+    padding: 1lh 2ch;
+  }
+
+  .feature-card {
+    padding: 1lh 2ch;
   }
 
   .footer {

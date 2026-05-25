@@ -19,8 +19,15 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     meta: [
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'devme — the executable README' },
-      { name: 'description', content: 'One command to go from git clone to a running dev environment. No README needed.' },
+      { title: 'devme | the executable README' },
+      { name: 'description', content: 'One command to go from git clone to a running dev environment. devme reads your project config, installs dependencies, starts services, and drops you into a live TUI.' },
+      { property: 'og:title', content: 'devme | the executable README' },
+      { property: 'og:description', content: 'One command to go from git clone to a running dev environment. No README needed.' },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:url', content: 'https://devme.sh' },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: 'devme | the executable README' },
+      { name: 'twitter:description', content: 'One command to go from git clone to a running dev environment. No README needed.' },
     ],
     links: [
       { rel: 'stylesheet', href: appCss },
