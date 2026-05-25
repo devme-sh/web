@@ -51,7 +51,7 @@ function Hero() {
       <Suspense fallback={null}>
         <AsciiHero />
       </Suspense>
-      <div className="hero-content page-wrap" style={{ padding: '6lh 0 4lh' }}>
+      <div className="hero-content page-wrap" style={{ paddingTop: '6lh', paddingBottom: '4lh' }}>
         <p className="dimmed fade-in" style={{ marginBottom: '0.5lh' }}>~/your-project</p>
         <h1 className="fade-in stagger-1 glow-green" style={{ fontSize: '2.4em', margin: '0 0 1lh', lineHeight: 1.1 }}>
           <ScrambleText text="The executable README" speed={0.6} scramble={8} step={2} />

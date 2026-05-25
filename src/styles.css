@@ -377,7 +377,8 @@ body {
   }
 
   .hero-content {
-    padding: 4lh 0 3lh !important;
+    padding-top: 4lh !important;
+    padding-bottom: 3lh !important;
   }
 
   .hero-content h1 {
