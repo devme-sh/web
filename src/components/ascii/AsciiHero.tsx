@@ -1,13 +1,10 @@
 import { useEffect, useRef } from 'react'
 
-// Dense character ramp — every cell is filled, heavier chars = brighter
 const CHARS = '·:;=+*#%@█'
 
-// 2D Perlin noise implementation
 function fade(t: number) { return t * t * t * (t * (t * 6 - 15) + 10) }
 function lerp(a: number, b: number, t: number) { return a + t * (b - a) }
 
-// Permutation table
 const P = new Uint8Array(512)
 ;(function initPerm() {
   const p = [151,160,137,91,90,15,131,13,201,95,96,53,194,233,7,225,140,36,
@@ -63,16 +60,18 @@ function fbm(x: number, y: number, octaves: number): number {
 }
 
 export function AsciiHero() {
-  const containerRef = useRef<HTMLPreElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
   const rafRef = useRef<number>(0)
   const mouseRef = useRef({ x: -1, y: -1 })
   const smoothMouseRef = useRef({ x: 0.5, y: 0.5 })
 
   useEffect(() => {
-    const el = containerRef.current
-    if (!el) return
-    const parent = el.parentElement
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const parent = canvas.parentElement
     if (!parent) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
 
     const onMove = (e: MouseEvent) => {
       const r = parent.getBoundingClientRect()
@@ -86,17 +85,32 @@ export function AsciiHero() {
     parent.addEventListener('mousemove', onMove)
     parent.addEventListener('mouseleave', onLeave)
 
+    const fontSize = 14
+    const dpr = window.devicePixelRatio || 1
+
     let time = 0
-    const charW = 8.4
-    const charH = 16.8
 
     function render() {
-      const rect = el!.getBoundingClientRect()
-      const cols = Math.floor(rect.width / charW)
-      const rows = Math.floor(rect.height / charH)
+      const rect = canvas!.getBoundingClientRect()
+      const w = rect.width
+      const h = rect.height
+
+      canvas!.width = w * dpr
+      canvas!.height = h * dpr
+      ctx!.setTransform(dpr, 0, 0, dpr, 0, 0)
+
+      ctx!.font = `${fontSize}px "JetBrains Mono", "Fira Code", "SF Mono", monospace`
+      const charW = ctx!.measureText('M').width
+      const charH = fontSize * 1.2
+
+      const cols = Math.floor(w / charW)
+      const rows = Math.floor(h / charH)
       if (cols <= 0 || rows <= 0) { rafRef.current = requestAnimationFrame(render); return }
 
-      // Smooth mouse
+      ctx!.clearRect(0, 0, w, h)
+      ctx!.fillStyle = '#a6e3a1'
+      ctx!.globalAlpha = 1
+
       const sm = smoothMouseRef.current
       const tm = mouseRef.current
       if (tm.x < 0) {
@@ -107,33 +121,28 @@ export function AsciiHero() {
         sm.y += (tm.y - sm.y) * 0.06
       }
 
-      const lines: string[] = []
-      for (let y = 0; y < rows; y++) {
-        let line = ''
-        for (let x = 0; x < cols; x++) {
-          const nx = x / cols
-          const ny = y / rows
+      for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+          const nx = col / cols
+          const ny = row / rows
 
-          // Perlin noise base — always fills the screen with varying density
           const n = fbm(nx * 4.0 + time * 0.2, ny * 3.0 + time * 0.15, 4)
-          // Map from [-0.5, 0.5] range to [0.15, 0.7] — ensures no blank spots
           let v = n * 0.55 + 0.42
 
-          // Mouse influence — smooth radial bump
           const dx = nx - sm.x
-          const dy = (ny - sm.y) * 0.5 // aspect ratio correction
+          const dy = (ny - sm.y) * 0.5
           const dist = Math.sqrt(dx * dx + dy * dy)
           const bump = Math.exp(-dist * dist * 12.0) * 0.5
           v += bump
 
           v = Math.max(0, Math.min(0.999, v))
           const idx = Math.floor(v * CHARS.length)
-          line += CHARS[Math.min(idx, CHARS.length - 1)]
+          const ch = CHARS[Math.min(idx, CHARS.length - 1)]
+
+          ctx!.fillText(ch, col * charW, row * charH + fontSize)
         }
-        lines.push(line)
       }
 
-      el!.textContent = lines.join('\n')
       time += 0.016
       rafRef.current = requestAnimationFrame(render)
     }
@@ -147,8 +156,8 @@ export function AsciiHero() {
   }, [])
 
   return (
-    <pre
-      ref={containerRef}
+    <canvas
+      ref={canvasRef}
       style={{
         position: 'absolute',
         top: 0,
@@ -156,16 +165,8 @@ export function AsciiHero() {
         width: '100%',
         height: '100%',
         zIndex: 0,
-        margin: 0,
-        padding: 0,
-        overflow: 'hidden',
-        color: '#a6e3a1',
         opacity: 0.14,
-        fontSize: '14px',
-        lineHeight: '16.8px',
-        letterSpacing: '0.6px',
         pointerEvents: 'none',
-        userSelect: 'none',
       }}
     />
   )
