@@ -24,7 +24,10 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     ],
     links: [
       { rel: 'stylesheet', href: appCss },
+      { rel: 'icon', type: 'image/png', sizes: '512x512', href: '/logo512.png' },
+      { rel: 'icon', type: 'image/png', sizes: '192x192', href: '/logo192.png' },
       { rel: 'icon', href: '/favicon.ico' },
+      { rel: 'apple-touch-icon', href: '/logo192.png' },
       { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
       { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap' },

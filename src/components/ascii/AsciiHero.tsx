@@ -64,6 +64,7 @@ export function AsciiHero() {
   const rafRef = useRef<number>(0)
   const mouseRef = useRef({ x: -1, y: -1 })
   const smoothMouseRef = useRef({ x: 0.5, y: 0.5 })
+  const sizeRef = useRef({ w: 0, h: 0 })
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -72,6 +73,8 @@ export function AsciiHero() {
     if (!parent) return
     const ctx = canvas.getContext('2d')
     if (!ctx) return
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     const onMove = (e: MouseEvent) => {
       const r = parent.getBoundingClientRect()
@@ -88,19 +91,57 @@ export function AsciiHero() {
     const fontSize = 14
     const dpr = window.devicePixelRatio || 1
 
+    function updateSize() {
+      const rect = canvas!.getBoundingClientRect()
+      sizeRef.current = { w: rect.width, h: rect.height }
+      canvas!.width = rect.width * dpr
+      canvas!.height = rect.height * dpr
+      ctx!.setTransform(dpr, 0, 0, dpr, 0, 0)
+    }
+
+    const ro = new ResizeObserver(updateSize)
+    ro.observe(canvas)
+    updateSize()
+
+    if (reducedMotion) {
+      ctx.font = `${fontSize}px "JetBrains Mono", "Fira Code", "SF Mono", monospace`
+      const charW = ctx.measureText('M').width
+      const charH = fontSize * 1.2
+      const { w, h } = sizeRef.current
+      const cols = Math.floor(w / charW)
+      const rows = Math.floor(h / charH)
+
+      ctx.fillStyle = '#a6e3a1'
+      for (let row = 0; row < rows; row++) {
+        let line = ''
+        for (let col = 0; col < cols; col++) {
+          const nx = col / cols
+          const ny = row / rows
+          const n = fbm(nx * 4.0, ny * 3.0, 4)
+          let v = n * 0.55 + 0.42
+          v = Math.max(0, Math.min(0.999, v))
+          const idx = Math.floor(v * CHARS.length)
+          line += CHARS[Math.min(idx, CHARS.length - 1)]
+        }
+        ctx.fillText(line, 0, row * charH + fontSize)
+      }
+
+      return () => {
+        ro.disconnect()
+        parent.removeEventListener('mousemove', onMove)
+        parent.removeEventListener('mouseleave', onLeave)
+      }
+    }
+
     let time = 0
+    let charW = 0
 
     function render() {
-      const rect = canvas!.getBoundingClientRect()
-      const w = rect.width
-      const h = rect.height
-
-      canvas!.width = w * dpr
-      canvas!.height = h * dpr
-      ctx!.setTransform(dpr, 0, 0, dpr, 0, 0)
+      const { w, h } = sizeRef.current
+      if (w <= 0 || h <= 0) { rafRef.current = requestAnimationFrame(render); return }
 
       ctx!.font = `${fontSize}px "JetBrains Mono", "Fira Code", "SF Mono", monospace`
-      const charW = ctx!.measureText('M').width
+      if (charW === 0) charW = ctx!.measureText('M').width
       const charH = fontSize * 1.2
 
       const cols = Math.floor(w / charW)
@@ -109,7 +150,6 @@ export function AsciiHero() {
 
       ctx!.clearRect(0, 0, w, h)
       ctx!.fillStyle = '#a6e3a1'
-      ctx!.globalAlpha = 1
 
       const sm = smoothMouseRef.current
       const tm = mouseRef.current
@@ -122,6 +162,7 @@ export function AsciiHero() {
       }
 
       for (let row = 0; row < rows; row++) {
+        let line = ''
         for (let col = 0; col < cols; col++) {
           const nx = col / cols
           const ny = row / rows
@@ -137,10 +178,9 @@ export function AsciiHero() {
 
           v = Math.max(0, Math.min(0.999, v))
           const idx = Math.floor(v * CHARS.length)
-          const ch = CHARS[Math.min(idx, CHARS.length - 1)]
-
-          ctx!.fillText(ch, col * charW, row * charH + fontSize)
+          line += CHARS[Math.min(idx, CHARS.length - 1)]
         }
+        ctx!.fillText(line, 0, row * charH + fontSize)
       }
 
       time += 0.016
@@ -150,6 +190,7 @@ export function AsciiHero() {
     rafRef.current = requestAnimationFrame(render)
     return () => {
       cancelAnimationFrame(rafRef.current)
+      ro.disconnect()
       parent.removeEventListener('mousemove', onMove)
       parent.removeEventListener('mouseleave', onLeave)
     }
