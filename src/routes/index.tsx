@@ -29,9 +29,15 @@ function Landing() {
 
 function Hero() {
   const [copied, setCopied] = useState(false)
+  const [method, setMethod] = useState<'curl' | 'brew'>('curl')
+
+  const commands = {
+    curl: 'curl -fsSL https://devme.sh/install | sh',
+    brew: 'brew install devme-sh/tap/devme',
+  }
 
   const handleCopy = () => {
-    navigator.clipboard.writeText('brew install devme-sh/tap/devme')
+    navigator.clipboard.writeText(commands[method])
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
@@ -52,16 +58,22 @@ function Hero() {
           and drops you into a live TUI. No README needed.
         </p>
 
-        <div
-          className="hero-install fade-in stagger-3"
-          onClick={handleCopy}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => e.key === 'Enter' && handleCopy()}
-        >
-          <span className="prompt">$</span>
-          <span className="cmd">brew install devme-sh/tap/devme</span>
-          <span className="copy-hint">{copied ? <><span className="nf-icon green">󰄬</span>copied</> : <><span className="nf-icon">󰆏</span>copy</>}</span>
+        <div className="fade-in stagger-3">
+          <div className="install-tabs">
+            <button className={`install-tab ${method === 'curl' ? 'active' : ''}`} onClick={() => setMethod('curl')}>curl</button>
+            <button className={`install-tab ${method === 'brew' ? 'active' : ''}`} onClick={() => setMethod('brew')}>brew</button>
+          </div>
+          <div
+            className="hero-install"
+            onClick={handleCopy}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => e.key === 'Enter' && handleCopy()}
+          >
+            <span className="prompt">$</span>
+            <span className="cmd">{commands[method]}</span>
+            <span className="copy-hint">{copied ? <><span className="nf-icon green">󰄬</span>copied</> : <><span className="nf-icon">󰆏</span>copy</>}</span>
+          </div>
         </div>
 
         <div className="fade-in stagger-4" style={{ marginTop: '1.5lh', display: 'flex', gap: '3ch' }}>
@@ -133,23 +145,23 @@ function TerminalDemo() {
     <span key={0} className="line">&nbsp;</span>,
     <span key={1} className="line"><span className="accent">  ◆</span>  <strong>Configure environment</strong>  <span className="dimmed">3 variables</span></span>,
     <span key={2} className="line"><span className="dimmed">  │</span></span>,
-    <span key={3} className="line"><span className="dimmed">  │</span>  <span className="green">◇</span> DATABASE_URL  <span className="dimmed">postgresql://localhost:5432/dev</span></span>,
-    <span key={4} className="line"><span className="dimmed">  │</span>  <span className="green">◇</span> AUTH_SECRET  <span className="dimmed">Generated</span></span>,
-    <span key={5} className="line"><span className="dimmed">  │</span>  <span className="green">◇</span> API_KEY  <span className="dimmed">sk-proj-...abc</span></span>,
+    <span key={3} className="line"><span className="dimmed">  │</span>  <span className="green">◇</span> <span className="yellow">DATABASE_URL</span>  <span className="dimmed">postgresql://localhost:5432/dev</span></span>,
+    <span key={4} className="line"><span className="dimmed">  │</span>  <span className="green">◇</span> <span className="yellow">AUTH_SECRET</span>  <span className="cyan">Generated</span></span>,
+    <span key={5} className="line"><span className="dimmed">  │</span>  <span className="green">◇</span> <span className="yellow">API_KEY</span>  <span className="dimmed">sk-proj-...abc</span></span>,
     <span key={6} className="line"><span className="dimmed">  │</span></span>,
     <span key={7} className="line">  └  <span className="green">Wrote 3 variables to .env.local</span></span>,
     <span key={8} className="line">&nbsp;</span>,
     <span key={9} className="line"><span className="accent">  ◆</span>  <strong>Check dependencies</strong></span>,
     <span key={10} className="line"><span className="dimmed">  │</span></span>,
-    <span key={11} className="line"><span className="dimmed">  │</span>  <span className="green">◇</span> Node.js runtime</span>,
+    <span key={11} className="line"><span className="dimmed">  │</span>  <span className="green">◇</span> <span className="blue">Node.js</span> runtime</span>,
     <span key={12} className="line"><span className="dimmed">  │</span>  <span className="green">◇</span> Install dependencies</span>,
     <span key={13} className="line"><span className="dimmed">  │</span></span>,
     <span key={14} className="line">  └  <span className="green">All dependencies satisfied</span></span>,
     <span key={15} className="line">&nbsp;</span>,
-    <span key={16} className="line"><span className="dimmed">[+] Running 3/3</span></span>,
-    <span key={17} className="line"><span className="green">  ● postgres</span>    <span className="dimmed">ready to accept connections</span></span>,
-    <span key={18} className="line"><span className="green">  ● api</span>         <span className="dimmed">listening on :8080</span></span>,
-    <span key={19} className="line"><span className="green">  ● web</span>         <span className="dimmed">VITE+ ready in 340ms</span></span>,
+    <span key={16} className="line"><span className="cyan">[+]</span> Running <span className="green">3/3</span></span>,
+    <span key={17} className="line">  <span className="green">●</span> <span className="cyan">postgres</span>    <span className="dimmed">ready to accept connections</span></span>,
+    <span key={18} className="line">  <span className="green">●</span> <span className="cyan">api</span>         <span className="dimmed">listening on </span><span className="yellow">:8080</span></span>,
+    <span key={19} className="line">  <span className="green">●</span> <span className="mauve">web</span>         <span className="dimmed">VITE+ ready in </span><span className="yellow">340ms</span></span>,
   ]
 
   return (
@@ -225,23 +237,23 @@ function HowItWorks() {
       <div className="terminal-demo">
         <span className="line"><span className="dimmed"># 1. Add a devme.toml to your repo</span></span>
         <span className="line">&nbsp;</span>
-        <span className="line"><span className="warn">schema_version</span> = <span className="green">1</span></span>
+        <span className="line"><span className="cyan">schema_version</span> = <span className="peach">1</span></span>
         <span className="line">&nbsp;</span>
-        <span className="line"><span className="dimmed">[</span><span className="warn">env</span>.DATABASE_URL<span className="dimmed">]</span></span>
-        <span className="line">default = <span className="green">"postgresql://localhost:5432/dev"</span></span>
-        <span className="line">help    = <span className="green">"Connection string for the dev database"</span></span>
+        <span className="line"><span className="dimmed">[</span><span className="yellow">env</span><span className="dimmed">.</span><span className="mauve">DATABASE_URL</span><span className="dimmed">]</span></span>
+        <span className="line"><span className="cyan">default</span> = <span className="green">"postgresql://localhost:5432/dev"</span></span>
+        <span className="line"><span className="cyan">help</span>    = <span className="green">"Connection string for the dev database"</span></span>
         <span className="line">&nbsp;</span>
-        <span className="line"><span className="dimmed">[</span><span className="warn">step</span>.deps<span className="dimmed">]</span></span>
-        <span className="line">check     = <span className="green">"test -d node_modules"</span></span>
-        <span className="line">provision = <span className="green">"bun install"</span></span>
+        <span className="line"><span className="dimmed">[</span><span className="yellow">step</span><span className="dimmed">.</span><span className="mauve">deps</span><span className="dimmed">]</span></span>
+        <span className="line"><span className="cyan">check</span>     = <span className="green">"test -d node_modules"</span></span>
+        <span className="line"><span className="cyan">provision</span> = <span className="green">"bun install"</span></span>
         <span className="line">&nbsp;</span>
-        <span className="line"><span className="dimmed">[</span><span className="warn">service</span>.db<span className="dimmed">]</span></span>
-        <span className="line">cmd  = <span className="green">"docker run --rm -p {'{port}'}:5432 postgres:17"</span></span>
-        <span className="line">port = <span className="dimmed">{'{ base = 5432, slot_offset = 10 }'}</span></span>
+        <span className="line"><span className="dimmed">[</span><span className="yellow">service</span><span className="dimmed">.</span><span className="mauve">db</span><span className="dimmed">]</span></span>
+        <span className="line"><span className="cyan">cmd</span>  = <span className="green">"docker run --rm -p {'{port}'}:5432 postgres:17"</span></span>
+        <span className="line"><span className="cyan">port</span> = <span className="dimmed">{'{ '}</span><span className="cyan">base</span> = <span className="peach">5432</span><span className="dimmed">, </span><span className="cyan">slot_offset</span> = <span className="peach">10</span><span className="dimmed">{' }'}</span></span>
         <span className="line">&nbsp;</span>
-        <span className="line"><span className="dimmed">[</span><span className="warn">service</span>.web<span className="dimmed">]</span></span>
-        <span className="line">cmd        = <span className="green">"bun run dev"</span></span>
-        <span className="line">depends_on = <span className="dimmed">[</span><span className="green">"deps"</span>, <span className="green">"db"</span><span className="dimmed">]</span></span>
+        <span className="line"><span className="dimmed">[</span><span className="yellow">service</span><span className="dimmed">.</span><span className="mauve">web</span><span className="dimmed">]</span></span>
+        <span className="line"><span className="cyan">cmd</span>        = <span className="green">"bun run dev"</span></span>
+        <span className="line"><span className="cyan">depends_on</span> = <span className="dimmed">[</span><span className="green">"deps"</span><span className="dimmed">, </span><span className="green">"db"</span><span className="dimmed">]</span></span>
         <span className="line">&nbsp;</span>
         <span className="line"><span className="dimmed"># 2. Run devme</span></span>
         <span className="line"><span className="prompt-char">$</span> <span className="cmd-text">devme</span></span>
