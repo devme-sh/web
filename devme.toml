@@ -1,0 +1,49 @@
+schema_version = 1
+
+[env.DATABASE_URL]
+required = true
+default = "postgresql://devme:devme@localhost:5432/devme_web"
+help = "Connection string. Default matches the docker container devme starts."
+
+[env.BETTER_AUTH_SECRET]
+generate = "openssl rand -hex 32"
+help = "Auth signing key. Auto-generated on first run."
+
+[env.BETTER_AUTH_URL]
+default = "http://localhost:3000"
+help = "Base URL for auth callbacks. Keep the default for local dev."
+
+[env.VITE_POSTHOG_KEY]
+help = "Find it at: app.posthog.com → your project → Settings → Project API Key"
+
+[env.VITE_POSTHOG_HOST]
+choices = ["https://us.i.posthog.com", "https://eu.i.posthog.com"]
+default = "https://us.i.posthog.com"
+help = "PostHog ingestion endpoint."
+
+[step.bun]
+check = "command -v bun"
+provision = "curl -fsSL https://bun.sh/install | bash"
+description = "Bun runtime"
+
+[step.deps]
+check = "test -d node_modules"
+provision = "bun install"
+trust = "auto"
+depends_on = ["bun"]
+description = "Install dependencies"
+
+[step.db_migrate]
+check = "bunx drizzle-kit check 2>/dev/null"
+provision = "bunx drizzle-kit push"
+depends_on = ["deps", "postgres"]
+description = "Push database schema"
+
+[service.postgres]
+cmd = "docker rm -f devme-web-pg 2>/dev/null; docker run --rm --name devme-web-pg -e POSTGRES_USER=devme -e POSTGRES_PASSWORD=devme -e POSTGRES_DB=devme_web -p {port}:5432 postgres:17-alpine"
+port = { base = 5432, slot_offset = 10 }
+
+[service.web]
+cmd = "bun run dev"
+port = { base = 3000, slot_offset = 10 }
+depends_on = ["deps", "db_migrate"]
