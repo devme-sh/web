@@ -94,7 +94,7 @@ function TerminalDemo() {
   const [visibleLines, setVisibleLines] = useState(0)
   const [started, setStarted] = useState(false)
   const demoRef = useRef<HTMLDivElement>(null)
-  const hasTriggered = useRef(false)
+  const animatingRef = useRef(false)
 
   const cmd = 'cd my-project && devme'
 
@@ -103,9 +103,14 @@ function TerminalDemo() {
     if (!el) return
     const obs = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !hasTriggered.current) {
-          hasTriggered.current = true
+        if (entry.isIntersecting && !animatingRef.current) {
+          animatingRef.current = true
+          setTypedCmd('')
+          setVisibleLines(0)
           setStarted(true)
+        } else if (!entry.isIntersecting) {
+          animatingRef.current = false
+          setStarted(false)
         }
       },
       { threshold: 0.15 },
