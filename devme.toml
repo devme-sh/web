@@ -40,8 +40,9 @@ depends_on = ["deps", "postgres"]
 description = "Push database schema"
 
 [service.postgres]
-cmd = "DEVME_PORT={port} docker compose up --force-recreate --remove-orphans postgres"
-port = { base = 5432, slot_offset = 10 }
+cmd = "docker compose up --force-recreate --remove-orphans postgres"
+port = { fixed = 5432 }
+scope = "repo"
 
 [service.web]
 cmd = "bun run dev"
