@@ -21,6 +21,8 @@ function Landing() {
         <hr className="separator" />
         <HowItWorks />
         <hr className="separator" />
+        <AgentSkills />
+        <hr className="separator" />
         <Footer />
       </div>
     </>
@@ -263,6 +265,38 @@ function HowItWorks() {
         <span className="line"><span className="dimmed"># 2. Run devme</span></span>
         <span className="line"><span className="prompt-char">$</span> <span className="cmd-text">devme</span></span>
         <span className="line"><span className="dimmed"># That's it. Environment configured, deps installed, services running.</span></span>
+      </div>
+    </section>
+  )
+}
+
+function AgentSkills() {
+  const [copied, setCopied] = useState(false)
+  const cmd = 'npx skills add devme-sh/skills'
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(cmd)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  return (
+    <section>
+      <h2 className="section-heading">AI agent support</h2>
+      <p className="muted" style={{ maxWidth: '60ch', marginBottom: '1.5lh' }}>
+        devme ships a skill for Claude Code, Cursor, Codex, and 50+ other AI coding agents.
+        Your agent can generate devme.toml configs, diagnose failing services, and read logs without you lifting a finger.
+      </p>
+      <div
+        className="hero-install"
+        onClick={handleCopy}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => e.key === 'Enter' && handleCopy()}
+      >
+        <span className="prompt">$</span>
+        <span className="cmd">{cmd}</span>
+        <span className="copy-hint">{copied ? <><span className="nf-icon green">󰄬</span>copied</> : <><span className="nf-icon">󰆏</span>copy</>}</span>
       </div>
     </section>
   )
