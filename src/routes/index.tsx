@@ -13,7 +13,7 @@ function Landing() {
     <>
       <div className="crt-overlay" />
       <Hero />
-      <div className="page-wrap">
+      <main className="page-wrap">
         <hr className="separator" />
         <TerminalDemo />
         <hr className="separator" />
@@ -26,7 +26,7 @@ function Landing() {
         <ClosingCta />
         <hr className="separator" />
         <Footer />
-      </div>
+      </main>
     </>
   )
 }
@@ -47,7 +47,7 @@ function Hero() {
   }
 
   return (
-    <section className="hero-section">
+    <section className="hero-section" aria-label="devme - the executable README">
       <Suspense fallback={null}>
         <AsciiHero />
       </Suspense>
@@ -57,7 +57,7 @@ function Hero() {
           <ScrambleText text="The executable README" speed={0.6} scramble={8} step={2} />
         </h1>
         <p className="muted fade-in stagger-2" style={{ maxWidth: '55ch', margin: '0 0 2lh', lineHeight: 1.6 }}>
-          One command to go from <span className="glow-cyan">git clone</span> to a running dev environment.
+          devme is a CLI tool that goes from <span className="glow-cyan">git clone</span> to a running dev environment in one command.
           devme reads your project config, installs dependencies, starts services,
           and drops you into a live TUI. No README needed.
         </p>
@@ -174,8 +174,8 @@ function TerminalDemo() {
   ]
 
   return (
-    <section>
-      <h2 className="section-heading">See it in action</h2>
+    <section aria-label="Terminal demo">
+      <h2 className="section-heading" id="demo">See it in action</h2>
       <div className="terminal-demo" ref={demoRef}>
         <span className="line">
           <span className="prompt-char">$</span>{' '}
@@ -225,7 +225,7 @@ function Features() {
   ]
 
   return (
-    <section>
+    <section aria-label="Features" id="features">
       <h2 className="section-heading">Features</h2>
       <div className="feature-grid">
         {features.map((f, i) => (
@@ -241,7 +241,7 @@ function Features() {
 
 function HowItWorks() {
   return (
-    <section>
+    <section aria-label="How it works">
       <h2 className="section-heading">How it works</h2>
       <div className="terminal-demo">
         <span className="line"><span className="dimmed"># 1. Add a devme.toml to your repo</span></span>
@@ -283,7 +283,7 @@ function AgentSkills() {
   }
 
   return (
-    <section>
+    <section aria-label="AI agent support">
       <h2 className="section-heading">AI agent support</h2>
       <p className="muted" style={{ maxWidth: '60ch', marginBottom: '1.5lh' }}>
         devme ships a skill for Claude Code, Cursor, Codex, and 50+ other AI coding agents.
@@ -315,7 +315,7 @@ function ClosingCta() {
   }
 
   return (
-    <section style={{ textAlign: 'center' }}>
+    <section aria-label="Get started" style={{ textAlign: 'center' }}>
       <h2 className="section-heading" style={{ display: 'inline' }}>Get started</h2>
       <p className="muted" style={{ margin: '1lh 0' }}>
         Try it on any project with a devme.toml.

@@ -1,0 +1,29 @@
+# devme
+
+> devme is a CLI developer tool that sets up complete dev environments from a single config file (devme.toml). One command to go from git clone to a running dev environment with services, env vars, and a live TUI.
+
+devme is installed via curl (`curl -fsSL https://devme.sh/install | sh`) or Homebrew (`brew install devme-sh/tap/devme`). It reads a declarative devme.toml in your project root, configures environment variables, checks and installs dependencies, starts services in dependency order with health checks, and drops you into a terminal UI with per-service log streams. It supports git multi-worktree isolation with scoped ports. devme is open source (MIT).
+
+## Docs
+
+- [Quickstart](https://github.com/devme-sh/devme#quickstart): Install devme and run it on your first project
+- [Configuration](https://github.com/devme-sh/devme#configuration): Full devme.toml schema — env vars, steps, services, ports
+
+## Features
+
+- [Declarative env vars](https://devme.sh/#features): Declare expected variables in devme.toml with defaults, help text, and auto-generate commands
+- [Dependency checks](https://devme.sh/#features): Steps verify prerequisites before services start
+- [Service orchestration](https://devme.sh/#features): Postgres, Redis, APIs — started in dependency order with health checks
+- [Live TUI](https://devme.sh/#features): Terminal UI with per-service log streams, scrollback, filtering
+- [Multi-worktree](https://devme.sh/#features): Each git worktree gets isolated ports
+
+## AI Agent Integration
+
+- [Agent skills](https://github.com/devme-sh/skills): Claude Code, Cursor, and Codex skills for generating configs and diagnosing services
+- Install with `npx skills add devme-sh/skills`
+
+## Optional
+
+- [Changelog](https://github.com/devme-sh/devme/releases): Release notes and version history
+- [Issues](https://github.com/devme-sh/devme/issues): Bug reports and feature requests
+- [License](https://github.com/devme-sh/devme#license): MIT License

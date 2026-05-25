@@ -48,6 +48,52 @@ function RootDocument({ children }: { children: React.ReactNode }) {
     <html lang="en" data-webtui-theme="dark">
       <head>
         <HeadContent />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "devme",
+          "alternateName": "devme CLI",
+          "description": "A CLI developer tool that sets up complete dev environments from a single config file (devme.toml). One command to go from git clone to a running dev environment with services, environment variables, dependency checks, and a live terminal UI.",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "macOS, Linux",
+          "url": "https://devme.sh",
+          "downloadUrl": "https://devme.sh/install",
+          "installUrl": "https://devme.sh/install",
+          "license": "https://opensource.org/licenses/MIT",
+          "isAccessibleForFree": true,
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+          "featureList": [
+            "Declarative environment variable management with devme.toml",
+            "Automatic dependency checking and installation",
+            "Service orchestration with health checks and dependency ordering",
+            "Live terminal UI with per-service log streams",
+            "Git multi-worktree support with isolated ports",
+            "AI agent skills for Claude Code, Cursor, and Codex",
+          ],
+          "author": { "@type": "Organization", "name": "devme-sh", "url": "https://github.com/devme-sh" },
+          "codeRepository": "https://github.com/devme-sh/devme",
+        }) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What is devme?",
+              "acceptedAnswer": { "@type": "Answer", "text": "devme is a CLI tool that reads a devme.toml config file in your project and sets up your entire dev environment — environment variables, dependencies, and services — with a single command." },
+            },
+            {
+              "@type": "Question",
+              "name": "How do I install devme?",
+              "acceptedAnswer": { "@type": "Answer", "text": "Run curl -fsSL https://devme.sh/install | sh, or use Homebrew: brew install devme-sh/tap/devme" },
+            },
+            {
+              "@type": "Question",
+              "name": "What does devme.toml look like?",
+              "acceptedAnswer": { "@type": "Answer", "text": "A devme.toml declares env vars with defaults and help text, steps that check and provision dependencies, and services with commands, ports, health checks, and dependency ordering." },
+            },
+          ],
+        }) }} />
       </head>
       <body>
         <PostHogProvider>
